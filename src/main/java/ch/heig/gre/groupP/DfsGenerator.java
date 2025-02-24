@@ -17,32 +17,27 @@ public final class DfsGenerator implements MazeGenerator {
 
     Random rand = new Random();
     Stack<Integer> stack = new Stack<>();
-    stack.push(from);
     ArrayList<Boolean> visitedVerticies = new ArrayList<>(builder.topology().nbVertices());
+    stack.push(from);
     visitedVerticies.set(from, true);
 
     while (!stack.isEmpty()){
       Integer currentVertex = stack.peek();
       List<Integer> neighbours = builder.topology().neighbors(currentVertex);
-
       // filtré
       neighbours.removeIf(visitedVerticies::get);
 
-      while (!neighbours.isEmpty()) {
-        Integer neighbourIndex = rand.nextInt(neighbours.size());
-        Integer neighbour = neighbours.get(neighbourIndex);
-        neighbours.remove(neighbourIndex);
-
-        stack.push(neighbour);
-        builder.removeWall(currentVertex, neighbour);
-
-        visitedVerticies.set(neighbour, true);
+      if (neighbours.isEmpty()) {
+        stack.pop();
+        continue;
       }
 
-      stack.pop();
+      Integer neighbour = neighbours.get(rand.nextInt(neighbours.size()));
+      stack.push(neighbour);
+      visitedVerticies.set(neighbour, true);
+      builder.removeWall(currentVertex, neighbour);
     }
-
-  // Si besoin Collections.shuffle
+    // Si besoin Collections.shuffle
   }
 
   @Override
