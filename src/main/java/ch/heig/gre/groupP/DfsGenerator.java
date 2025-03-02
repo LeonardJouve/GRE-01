@@ -14,17 +14,16 @@ public final class DfsGenerator implements MazeGenerator {
 
     Random rand = new Random();
     Stack<Integer> stack = new Stack<>();
-    // TODO: change back to ArrayList
-    Set<Integer> visitedVerticies = new HashSet<>();
+    List<Boolean> visitedVerticies = new ArrayList<>(Collections.nCopies(builder.topology().nbVertices(), false));
     stack.push(from);
-    visitedVerticies.add(from);
+    visitedVerticies.set(from, true);
 
     while (!stack.isEmpty()) {
       Integer currentVertex = stack.peek();
       builder.progressions().setLabel(currentVertex, Progression.PROCESSING);
       List<Integer> neighbours = builder.topology().neighbors(currentVertex);
       // filtré
-      neighbours.removeIf(visitedVerticies::contains);
+      neighbours.removeIf(visitedVerticies::get);
 
       if (neighbours.isEmpty()) {
         stack.pop();
@@ -34,10 +33,9 @@ public final class DfsGenerator implements MazeGenerator {
 
       Integer neighbour = neighbours.get(rand.nextInt(neighbours.size()));
       stack.push(neighbour);
-      visitedVerticies.add(neighbour);
+      visitedVerticies.set(neighbour, true);
       builder.removeWall(currentVertex, neighbour);
     }
-    // Si besoin Collections.shuffle
   }
 
   @Override
