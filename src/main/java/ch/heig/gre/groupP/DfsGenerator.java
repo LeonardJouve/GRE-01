@@ -3,11 +3,7 @@ package ch.heig.gre.groupP;
 import ch.heig.gre.maze.MazeBuilder;
 import ch.heig.gre.maze.MazeGenerator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
-
-import java.util.Random;
+import java.util.*;
 
 public final class DfsGenerator implements MazeGenerator {
   @Override
@@ -17,15 +13,16 @@ public final class DfsGenerator implements MazeGenerator {
 
     Random rand = new Random();
     Stack<Integer> stack = new Stack<>();
-    ArrayList<Boolean> visitedVerticies = new ArrayList<>(builder.topology().nbVertices());
+    // TODO: change back to ArrayList
+    Set<Integer> visitedVerticies = new HashSet<>();
     stack.push(from);
-    visitedVerticies.set(from, true);
+    visitedVerticies.add(from);
 
-    while (!stack.isEmpty()){
+    while (!stack.isEmpty()) {
       Integer currentVertex = stack.peek();
       List<Integer> neighbours = builder.topology().neighbors(currentVertex);
       // filtré
-      neighbours.removeIf(visitedVerticies::get);
+      neighbours.removeIf(visitedVerticies::contains);
 
       if (neighbours.isEmpty()) {
         stack.pop();
@@ -34,7 +31,7 @@ public final class DfsGenerator implements MazeGenerator {
 
       Integer neighbour = neighbours.get(rand.nextInt(neighbours.size()));
       stack.push(neighbour);
-      visitedVerticies.set(neighbour, true);
+      visitedVerticies.add(neighbour);
       builder.removeWall(currentVertex, neighbour);
     }
     // Si besoin Collections.shuffle
