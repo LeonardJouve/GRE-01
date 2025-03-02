@@ -42,7 +42,6 @@ public final class DfsGenerator implements MazeGenerator {
 
   @Override
   public boolean requireWalls() {
-    new UnsupportedOperationException("Not implemented yet");
-    return false;
+    return true;
   }
 }
