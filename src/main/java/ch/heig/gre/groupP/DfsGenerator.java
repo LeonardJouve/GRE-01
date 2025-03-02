@@ -12,6 +12,7 @@ public final class DfsGenerator implements MazeGenerator {
     if (builder == null) throw new NullPointerException("Builder missing");
     if (!builder.topology().vertexExists(from)) throw new IllegalArgumentException("Non-existent source node");
 
+    // initiate a random number generator
     Random rand = new Random();
     Stack<Integer> stack = new Stack<>();
     List<Boolean> visitedVerticies = new ArrayList<>(Collections.nCopies(builder.topology().nbVertices(), false));
@@ -40,6 +41,7 @@ public final class DfsGenerator implements MazeGenerator {
 
   @Override
   public boolean requireWalls() {
+    // We choose to destroy walls, so we ask for a builder full of walls
     return true;
   }
 }
