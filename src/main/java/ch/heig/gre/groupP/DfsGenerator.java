@@ -2,6 +2,7 @@ package ch.heig.gre.groupP;
 
 import ch.heig.gre.maze.MazeBuilder;
 import ch.heig.gre.maze.MazeGenerator;
+import ch.heig.gre.maze.Progression;
 
 import java.util.*;
 
@@ -20,12 +21,14 @@ public final class DfsGenerator implements MazeGenerator {
 
     while (!stack.isEmpty()) {
       Integer currentVertex = stack.peek();
+      builder.progressions().setLabel(currentVertex, Progression.PROCESSING);
       List<Integer> neighbours = builder.topology().neighbors(currentVertex);
       // filtré
       neighbours.removeIf(visitedVerticies::contains);
 
       if (neighbours.isEmpty()) {
         stack.pop();
+        builder.progressions().setLabel(currentVertex, Progression.PROCESSED);
         continue;
       }
 
