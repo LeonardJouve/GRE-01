@@ -39,7 +39,7 @@ public final class BfsSolver implements MazeSolver {
           currentVertex = predecessors.get(currentVertex);
         }
         path.add(source);
-
+        Collections.reverse(path);
         return path;
       }
 
