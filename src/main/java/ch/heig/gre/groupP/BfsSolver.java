@@ -33,13 +33,12 @@ public final class BfsSolver implements MazeSolver {
       // Destination is reached
       if (currentVertex == destination) {
         // Backtrace path found until source
-        List<Integer> path = new LinkedList<>();
+        List<Integer> path = new ArrayList<>(Collections.nCopies(distance + 1, 0));
         while (currentVertex != source) {
-          path.add(currentVertex);
+          path.set(distance--, currentVertex);
           currentVertex = predecessors.get(currentVertex);
         }
-        path.add(source);
-        Collections.reverse(path);
+        path.set(0, source);
         return path;
       }
 
